@@ -352,6 +352,9 @@ class Variation extends DataObject implements Buyable
         //prevent negative values
         $price = $price < 0 ? 0 : $price;
 
+        // prevent null values
+        $price = is_null($price) ? 0 : $price;
+
         // NOTE: Ideally, this would be dependent on the locale but as of
         // now the Silverstripe Currency field type has 2 hardcoded all over
         // the place. In the mean time there is an issue where the displayed
