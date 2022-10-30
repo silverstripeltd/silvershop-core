@@ -429,11 +429,14 @@ class Order extends DataObject
      */
     public function SubTotal()
     {
-        if ($this->Items()->exists()) {
-            return $this->Items()->SubTotal();
+        $result = 0;
+        foreach ($this->Items() as $item) {
+            $total = $item->UnitPrice() * $item->Quantity;
+            $item->CalculatedTotal = $total;
+            $result += $item->Total();
         }
 
-        return 0;
+        return $result;
     }
 
     /**
@@ -518,7 +521,7 @@ class Order extends DataObject
     public function Link()
     {
         $link = CheckoutPage::find_link(false, 'order', $this->ID);
-        
+
         if (Security::getCurrentUser()) {
             $link = Controller::join_links(AccountPage::find_link(), 'order', $this->ID);
         }
