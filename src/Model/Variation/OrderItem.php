@@ -33,17 +33,12 @@ class OrderItem extends \SilverShop\Model\Product\OrderItem
      */
     public function ProductVariation($forcecurrent = false)
     {
-        if ($this->ProductVariationID && $this->ProductVariationVersion && !$forcecurrent) {
-            return Versioned::get_version(
-                Variation::class,
-                $this->ProductVariationID,
-                $this->ProductVariationVersion
-            );
-        } elseif ($this->ProductVariationID
+        if ($this->ProductVariationID
             && $product = Variation::get()->byID($this->ProductVariationID)
         ) {
             return $product;
         }
+        
         return null;
     }
     
